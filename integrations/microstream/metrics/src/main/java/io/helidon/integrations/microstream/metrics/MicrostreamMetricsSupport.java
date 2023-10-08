@@ -19,6 +19,7 @@ package io.helidon.integrations.microstream.metrics;
 import java.util.Objects;
 
 import io.helidon.config.Config;
+import io.helidon.metrics.api.MetricsSettings;
 import io.helidon.metrics.api.RegistryFactory;
 import io.helidon.metrics.serviceapi.MetricsSupport;
 
@@ -39,7 +40,7 @@ import org.eclipse.microprofile.metrics.Tag;
 public class MicrostreamMetricsSupport {
 
     private static final String CONFIG_METRIC_ENABLED_VENDOR = "vendor.";
-    static final String BASE_ENABLED_KEY = CONFIG_METRIC_ENABLED_VENDOR + "enabled";
+    //static final String BASE_ENABLED_KEY = CONFIG_METRIC_ENABLED_VENDOR + "enabled";
 
     private static final Metadata GLOBAL_FILE_COUNT = Metadata.builder()
             .withName("microstream.globalFileCount")
@@ -76,7 +77,7 @@ public class MicrostreamMetricsSupport {
         this.embeddedStorageManager = builder.embeddedStorageManager();
 
         if (builder.registryFactory() == null) {
-            registryFactory = RegistryFactory.getInstance(config);
+            registryFactory = RegistryFactory.getInstance(MetricsSettings.create(config));
         } else {
             registryFactory = builder.registryFactory();
         }

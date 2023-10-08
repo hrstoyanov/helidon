@@ -49,7 +49,7 @@ public class MicrostreamHealthCheck implements HealthCheck {
         HealthCheckResponseBuilder builder = HealthCheckResponse.builder().name(name);
 
         try {
-            CompletableFuture<Boolean> status = CompletableFuture.supplyAsync(() -> embeddedStorageManager.isRunning())
+            CompletableFuture<Boolean> status = CompletableFuture.supplyAsync(embeddedStorageManager::isRunning)
                     .orTimeout(timeoutDuration, timeoutUnit);
 
             if (status.get()) {

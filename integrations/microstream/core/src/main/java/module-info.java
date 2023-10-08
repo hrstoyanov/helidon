@@ -28,5 +28,6 @@ module io.helidon.integrations.microstream {
     requires transitive microstream.storage;
     requires transitive microstream.storage.embedded;
     requires transitive microstream.storage.embedded.configuration;
+    requires microstream.persistence.binary.jdk17;
 
 }

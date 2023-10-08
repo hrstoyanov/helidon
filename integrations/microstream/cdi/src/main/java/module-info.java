@@ -29,10 +29,10 @@ module io.helidon.integrations.microstream.cdi {
     requires transitive jakarta.inject;
     requires jakarta.interceptor.api;
     requires jakarta.annotation;
-    requires microstream.base;
+    //requires microstream.base;
     requires microstream.cache;
-    requires microstream.persistence;
-    requires microstream.storage;
+    //requires microstream.persistence;
+    //requires microstream.storage;
     requires microstream.storage.embedded;
 
     provides jakarta.enterprise.inject.spi.Extension
