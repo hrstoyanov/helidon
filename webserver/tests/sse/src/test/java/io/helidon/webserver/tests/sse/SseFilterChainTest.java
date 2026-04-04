@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.helidon.http.sse.SseEvent;
 import io.helidon.webserver.WebServer;
+import io.helidon.webserver.http.FilterChain;
 import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.ServerRequest;
 import io.helidon.webserver.http.ServerResponse;
