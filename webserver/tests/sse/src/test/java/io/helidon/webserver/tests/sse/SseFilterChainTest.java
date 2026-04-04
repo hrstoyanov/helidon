@@ -152,7 +152,7 @@ class SseFilterChainTest {
      * @param response the server response
      */
     private static void bugDemonstratingFilter(
-            io.helidon.webserver.http.FilterChain chain,
+            FilterChain chain,
             ServerRequest request,
             ServerResponse response) {
 
