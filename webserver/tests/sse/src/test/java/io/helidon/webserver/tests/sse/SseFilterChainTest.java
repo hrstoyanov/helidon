@@ -78,6 +78,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 class SseFilterChainTest {
 
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
+    private static final String HEADER_NAME = "X-Emit-In-Filter";
 
     private final WebServer webServer;
 
