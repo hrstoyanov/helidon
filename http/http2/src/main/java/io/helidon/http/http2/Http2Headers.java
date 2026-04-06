@@ -445,12 +445,20 @@ public class Http2Headers {
         }
 
         for (Header header : headers) {
-            // send all values of the header
-            String value = header.values();
-            boolean shouldIndex = !header.changing();
-            boolean neverIndex = header.sensitive();
+            // RFC 7540 Section 8.1.2.5: Set-Cookie MUST NOT be combined.
+            // Each Set-Cookie header value MUST be sent as a separate header field.
+            if (header.headerName() == HeaderNames.SET_COOKIE) {
+                for (String value : header.allValues()) {
+                    writeHeader(huffman, table, growingBuffer, header.headerName(), value, false, header.sensitive());
+                }
+            } else {
+                // send all values of the header
+                String value = header.values();
+                boolean shouldIndex = !header.changing();
+                boolean neverIndex = header.sensitive();
 
-            writeHeader(huffman, table, growingBuffer, header.headerName(), value, shouldIndex, neverIndex);
+                writeHeader(huffman, table, growingBuffer, header.headerName(), value, shouldIndex, neverIndex);
+            }
         }
     }
 
