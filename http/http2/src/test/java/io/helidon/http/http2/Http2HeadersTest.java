@@ -19,6 +19,9 @@ package io.helidon.http.http2;
 import java.util.HexFormat;
 
 import io.helidon.common.buffers.BufferData;
+import io.helidon.http.Header;
+import io.helidon.http.HeaderValues;
+import io.helidon.http.SetCookie;
 import io.helidon.http.HeaderName;
 import io.helidon.http.HeaderNames;
 import io.helidon.http.Headers;
@@ -264,5 +267,33 @@ class Http2HeadersTest {
                                    dynamicTable,
                                    Http2HuffmanDecoder.create(),
                                    new Http2FrameData(header, data));
+    }
+
+    /**
+     * Test that multiple Set-Cookie headers are written as separate header fields.
+     * RFC 7540 Section 8.1.2.5: Set-Cookie MUST NOT be combined.
+     *
+     * @see <a href="https://github.com/helidon-io/helidon/issues/11542">Helidon Issue #11542</a>
+     */
+    @Test
+    void testMultipleSetCookieHeadersWrittenSeparately() {
+        WritableHeaders<?> headers = WritableHeaders.create();
+
+        SetCookie cookie1 = SetCookie.builder("session", "abc123")
+                .path("/")
+                .httpOnly(true)
+                .secure(true)
+                .build();
+        SetCookie cookie2 = SetCookie.builder("tracking", "xyz789")
+                .path("/")
+                .build();
+
+        headers.add(HeaderValues.create(HeaderNames.SET_COOKIE, cookie1.toString()));
+        headers.add(HeaderValues.create(HeaderNames.SET_COOKIE, cookie2.toString()));
+
+        // Verify we can retrieve both Set-Cookie headers separately
+        assertThat("Should have two Set-Cookie headers",
+                   headers.all(HeaderNames.SET_COOKIE, java.util.List::of).size(),
+                   is(2));
     }
 }
